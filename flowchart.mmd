@@ -1,0 +1,121 @@
+flowchart TD
+    subgraph "Client (Frontend)"
+        FE1["React Frontend Entry Point"]:::frontend
+        FE2["UI Components & Submodules"]:::frontend
+            FE2a["Notifications Components"]:::frontend
+            FE2b["Reports Components"]:::frontend
+            FE2c["Student Components"]:::frontend
+            FE2d["UI Library Components"]:::frontend
+        FE3["Page Routing & Views"]:::frontend
+        FE4["State Management & Context"]:::frontend
+            FE4a["AuthContext"]:::frontend
+            FE4b["NotificationContext"]:::frontend
+        FE5["Frontend Integrations with Supabase"]:::frontend
+            FE5a["Supabase Client Lib"]:::frontend
+            FE5b["Supabase Types"]:::frontend
+            FE5c["Supabase Helper"]:::frontend
+    end
+
+    subgraph "Server (Backend)"
+        BE1["Supabase Auth & Storage"]:::backend
+        BE2["Supabase Functions"]:::backend
+            BE2a["admin-create-users Function"]:::backend
+            BE2b["auth Function"]:::backend
+        BE3["PostgreSQL Database"]:::database
+            BE3a["students Table"]:::database
+            BE3b["personality_traits Table"]:::database
+            BE3c["behavioral_incidents Table"]:::database
+            BE3d["notifications Table"]:::database
+            BE3e["course_cards Table"]:::database
+    end
+
+    subgraph "Deployment & Tooling"
+        DT1["Deployment & Build Configs"]:::deployment
+            DT1a["vercel.json"]:::deployment
+            DT1b["vite.config.ts"]:::deployment
+            DT1c["tailwind.config.ts"]:::deployment
+            DT1d["tsconfig.json"]:::deployment
+    end
+
+    subgraph "External Integrations"
+        EI1["SQL Dump (Database Initialization)"]:::external
+    end
+
+    %% Frontend internal relationships
+    FE1 -->|"uses"| FE2
+    FE1 -->|"imports"| FE3
+    FE1 -->|"includes"| FE4
+    FE1 -->|"calls"| FE5
+
+    FE2 -->|"contains"| FE2a
+    FE2 -->|"contains"| FE2b
+    FE2 -->|"contains"| FE2c
+    FE2 -->|"contains"| FE2d
+
+    FE4 -->|"has"| FE4a
+    FE4 -->|"has"| FE4b
+
+    FE5 -->|"includes"| FE5a
+    FE5 -->|"includes"| FE5b
+    FE5 -->|"includes"| FE5c
+
+    %% Interactions between Frontend and Backend
+    FE5 -->|"communicatesWith"| BE1
+    FE5 -->|"callsFunction"| BE2
+    BE1 -->|"readsWritesTo"| BE3
+
+    %% Backend internal relationships
+    BE2 -->|"has"| BE2a
+    BE2 -->|"has"| BE2b
+
+    BE3 -->|"includes"| BE3a
+    BE3 -->|"includes"| BE3b
+    BE3 -->|"includes"| BE3c
+    BE3 -->|"includes"| BE3d
+    BE3 -->|"includes"| BE3e
+
+    %% Additional interactions
+    BE2 -->|"updates"| BE3
+    BE3 -->|"initializedBy"| EI1
+
+    %% Deployment configurations
+    FE1 -->|"configuredBy"| DT1
+    BE1 -->|"deployedBy"| DT1
+    BE2 -->|"deployedBy"| DT1
+
+    %% Click events for Client (Frontend)
+    click FE1 "https://github.com/d3b0j33t/asbm-sbms/blob/main/src/main.tsx"
+    click FE2 "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/components"
+    click FE2a "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/components/notifications"
+    click FE2b "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/components/reports"
+    click FE2c "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/components/student"
+    click FE2d "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/components/ui"
+    click FE3 "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/pages"
+    click FE4 "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/context"
+    click FE4a "https://github.com/d3b0j33t/asbm-sbms/blob/main/src/context/AuthContext.tsx"
+    click FE4b "https://github.com/d3b0j33t/asbm-sbms/blob/main/src/context/NotificationContext.tsx"
+    click FE5 "https://github.com/d3b0j33t/asbm-sbms/tree/main/src/integrations/supabase"
+    click FE5a "https://github.com/d3b0j33t/asbm-sbms/blob/main/src/integrations/supabase/client.ts"
+    click FE5b "https://github.com/d3b0j33t/asbm-sbms/blob/main/src/integrations/supabase/types.ts"
+    click FE5c "https://github.com/d3b0j33t/asbm-sbms/blob/main/src/lib/supabase.ts"
+
+    %% Click events for Server (Backend)
+    click BE2 "https://github.com/d3b0j33t/asbm-sbms/tree/main/supabase/functions"
+    click BE2a "https://github.com/d3b0j33t/asbm-sbms/blob/main/supabase/functions/admin-create-users/index.ts"
+    click BE2b "https://github.com/d3b0j33t/asbm-sbms/blob/main/supabase/functions/auth/index.ts"
+
+    %% Click event for External Integration
+    click EI1 "https://github.com/d3b0j33t/asbm-sbms/blob/main/full_dump.sql"
+
+    %% Click events for Deployment & Tooling
+    click DT1a "https://github.com/d3b0j33t/asbm-sbms/blob/main/vercel.json"
+    click DT1b "https://github.com/d3b0j33t/asbm-sbms/blob/main/vite.config.ts"
+    click DT1c "https://github.com/d3b0j33t/asbm-sbms/blob/main/tailwind.config.ts"
+    click DT1d "https://github.com/d3b0j33t/asbm-sbms/blob/main/tsconfig.json"
+
+    %% Styles
+    classDef frontend fill:#bbdefb,stroke:#0d47a1,stroke-width:2px;
+    classDef backend fill:#ffccbc,stroke:#bf360c,stroke-width:2px;
+    classDef database fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px;
+    classDef deployment fill:#fff9c4,stroke:#f57f17,stroke-width:2px;
+    classDef external fill:#d1c4e9,stroke:#512da8,stroke-width:2px;
